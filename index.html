@@ -150,7 +150,8 @@
         <h3>7. FULL OUTER EXCLUDING JOIN</h3>
         <p>Retorna todos os registros da tabela direita onde não há correspondência na tabela esquerda.</p>
         <pre><code>SELECT u.nome, c.produto FROM usuarios u FULL OUTER JOIN compras c ON u.id = c.usuario_id  WHERE u.id IS NULL OR c.usuario_id IS NULL; </code></pre>
-        <p>Resultado: exibe todos os produtos que foram comprados por usuários que não estão cadastrados na tabela de usuários.</p>
+        <p>Resultado: exibe todos os usuários que não realizaram compras e todos os produtos que foram comprados por usuários que não estão cadastrados na tabela de usuários.
+        </p>
     </div>
 
     
