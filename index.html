@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Estudos SQL</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .postit {
+            background-color: #ffff99;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px;
+            width: 300px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .postit h3 {
+            margin-top: 0;
+        }
+        .postit pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="postit">
+        <h3>1. Selecionar dados de uma tabela</h3>
+        <p>Consulta para obter todas as colunas e registros de uma tabela de usuários:</p>
+        <pre><code>SELECT * FROM usuarios;</code></pre>
+    </div>
+
+    <div class="postit">
+        <h3>2. Filtrar registros</h3>
+        <p>Consulta para obter usuários acima de 18 anos:</p>
+        <pre><code>SELECT nome, idade FROM usuarios WHERE idade > 18;</code></pre>
+    </div>
+
+    <div class="postit">
+        <h3>3. Ordenar resultados</h3>
+        <p>Consulta para listar usuários em ordem alfabética:</p>
+        <pre><code>SELECT nome, email FROM usuarios ORDER BY nome ASC;</code></pre>
+        <p><strong>ORDER BY nome ASC</strong></p>
+        <p>ORDER BY é usado para ordenar os resultados da consulta. nome indica que a ordenação será feita com base nos valores da coluna nome. ASC (ascending) especifica que a ordenação será em ordem crescente (de A a Z ou do menor para o maior). Se você quisesse ordenar em ordem decrescente (de Z a A ou do maior para o menor), usaria DESC (descending).</p>
+    </div>
+
+    <div class="postit">
+        <h3>4. Inserir dados</h3>
+        <p>Adicionando um novo usuário ao banco:</p>
+        <pre><code>INSERT INTO usuarios (nome, email, idade) VALUES ('João Silva', 'joao.silva@email.com', 25);</code></pre>
+    </div>
+
+    <div class="postit">
+        <h3>5. Atualizar dados</h3>
+        <p>Alterando o e-mail de um usuário específico:</p>
+        <pre><code>UPDATE usuarios SET email = 'novo.email@email.com' WHERE id = 1;</code></pre>
+    </div>
+
+    <div class="postit">
+        <h3>6. Deletar dados</h3>
+        <p>Removendo usuários menores de 18 anos:</p>
+        <pre><code>DELETE FROM usuarios WHERE idade < 18;</code></pre>
+    </div>
+
+    <div class="postit">
+        <h3>7. Contar registros</h3>
+        <p>Obtendo o total de usuários cadastrados:</p>
+        <pre><code>SELECT COUNT(*) AS total_usuarios FROM usuarios;</code></pre>
+    </div>
+
+    <div class="postit">
+        <h3>8. Usar agregação</h3>
+        <p>Calculando a média de idades dos usuários:</p>
+        <pre><code>SELECT AVG(idade) AS media_idade FROM usuarios;</code></pre>
+    </div>
+
+    <div class="postit">
+        <h3>9. União entre tabelas (JOIN)</h3>
+        <p>Pegando informações de usuários e suas compras:</p>
+        <pre><code>SELECT u.nome, c.produto, c.data_compra FROM usuarios u INNER JOIN compras c ON u.id = c.usuario_id;</code></pre>
+    </div>
+
+    <div class="postit">
+        <h3>10. Criação de tabela</h3>
+        <p>Criando uma tabela para armazenar produtos:</p>
+        <pre><code>CREATE TABLE produtos ( id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(100) NOT NULL, preco DECIMAL(10, 2) NOT NULL, estoque INT DEFAULT 0 );</code></pre>
+    </div>
+
+    <div class="postit">
+        <h3>Cenário</h3>
+        <p>Imagine que temos duas tabelas:</p>
+        <ul>
+            <li>usuarios: Contém informações sobre os usuários (id, nome).</li>
+            <li>compras: Contém informações sobre as compras realizadas (id, usuario_id, produto, data_compra).</li>
+        </ul>
+    </div>
+
+    <div class="postit">
+        <h3>1. INNER JOIN</h3>
+        <p>Retorna apenas as linhas que possuem correspondência em ambas as tabelas.</p>
+        <pre><code>SELECT u.nome, c.produto, c.data_compra FROM usuarios u INNER JOIN compras c ON u.id = c.usuario_id;</code></pre>
+        <p>Resultado: Exibe o nome do usuário, o produto comprado e a data da compra apenas para os usuários que realizaram compras.</p>
+    </div>
+
+    <div class="postit">
+        <h3>2. LEFT JOIN (ou LEFT OUTER JOIN)</h3>
+        <p>Retorna todas as linhas da tabela da esquerda (a primeira tabela mencionada) e as linhas correspondentes da tabela da direita. Se não houver correspondência, os valores da tabela da direita serão NULL.</p>
+        <pre><code>SELECT u.nome, c.produto, c.data_compra FROM usuarios u LEFT JOIN compras c ON u.id = c.usuario_id;</code></pre>
+        <p>Resultado: Exibe o nome de todos os usuários, e se eles tiverem compra, mostra o produto e a data, se não tiverem compra, os campos de compra ficam nulos.</p>
+    </div>
+
+    <div class="postit">
+        <h3>3. RIGHT JOIN (ou RIGHT OUTER JOIN)</h3>
+        <p>Retorna todas as linhas da tabela da direita (a segunda tabela mencionada) e as linhas correspondentes da tabela da esquerda. Se não houver correspondência, os valores da tabela da esquerda serão NULL.</p>
+        <pre><code>SELECT u.nome, c.produto, c.data_compra FROM usuarios u RIGHT JOIN compras c ON u.id = c.usuario_id;</code></pre>
+        <p>Resultado: Exibe o produto e a data de todas as compras e o nome dos usuários que compraram, se algum produto foi comprado por um usuário que não está cadastrado na tabela de usuários, o nome ficará nulo.</p>
+    </div>
+
+    <div class="postit">
+        <h3>4. FULL OUTER JOIN</h3>
+        <p>Retorna todas as linhas de ambas as tabelas. Se não houver correspondência, os valores serão NULL para a tabela correspondente.</p>
+        <pre><code>SELECT u.nome, c.produto, c.data_compra FROM usuarios u FULL OUTER JOIN compras c ON u.id = c.usuario_id;</code></pre>
+        <p>Resultado: Exibe todos os usuários e todas as compras, independentemente de haver correspondência entre as tabelas.</p>
+    </div>
+
+    <div class="postit">
+        <h3>5. LEFT EXCLUDING JOIN</h3>
+        <p>Retorna todos os registros da tabela esquerda onde não há correspondência na tabela direita.</p>
+        <pre><code>SELECT u.nome FROM usuarios u LEFT JOIN compras c ON u.id = c.usuario_id WHERE c.usuario_id IS NULL;</code></pre>
+        <p>Resultado: Exibe o nome de todos os usuários que não realizaram nenhuma compra.</p>
+    </div>
+
+    <div class="postit">
+        <h3>6. RIGHT EXCLUDING JOIN</h3>
+        <p>Retorna todos os registros da tabela direita onde não há correspondência na tabela esquerda.</p>
+        <pre><code>SELECT c.produto FROM usuarios u RIGHT JOIN compras c ON u.id = c.usuario_id WHERE u.id IS NULL;</code></pre>
+        <p>Resultado: exibe todos os produtos que foram comprados por usuários que não estão cadastrados na tabela de usuários.</p>
+    </div>
+
+    <div class="postit">
+        <h3>7. FULL OUTER EXCLUDING JOIN</h3>
+        <p>Retorna todos os registros da tabela direita onde não há correspondência na tabela esquerda.</p>
+        <pre><code>SELECT u.nome, c.produto FROM usuarios u FULL OUTER JOIN compras c ON u.id = c.usuario_id  WHERE u.id IS NULL OR c.usuario_id IS NULL; </code></pre>
+        <p>Resultado: exibe todos os produtos que foram comprados por usuários que não estão cadastrados na tabela de usuários.</p>
+    </div>
+
+    
