@@ -4,34 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guia de Estudos SQL</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            padding: 20px;
-        }
-        .postit {
-            background-color: #ffff99;
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin: 10px;
-            width: 300px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        .postit h3 {
-            margin-top: 0;
-        }
-        .postit pre {
-            background-color: #f0f0f0;
-            padding: 10px;
-            border: 1px solid #ddd;
-            overflow-x: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css"> 
+   
 </head>
 <body>
+  
+    <div class="postit">
+        <h1>INSERT, UPDATE, DELETE, COUNT</h1>
+       </div>
 
     <div class="postit">
         <h3>1. Selecionar dados de uma tabela</h3>
@@ -89,11 +69,7 @@
         <pre><code>SELECT u.nome, c.produto, c.data_compra FROM usuarios u INNER JOIN compras c ON u.id = c.usuario_id;</code></pre>
     </div>
 
-    <div class="postit">
-        <h3>10. Criação de tabela</h3>
-        <p>Criando uma tabela para armazenar produtos:</p>
-        <pre><code>CREATE TABLE produtos ( id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(100) NOT NULL, preco DECIMAL(10, 2) NOT NULL, estoque INT DEFAULT 0 );</code></pre>
-    </div>
+   
 
     <div class="postit">
         <h3>Cenário</h3>
@@ -154,4 +130,136 @@
         </p>
     </div>
 
+    <div class="postit">
+     <h1>CREATE, INSERT INTO, SELECT</h1>
+    </div>
+
+    <div class="postit">
+        <h3>1. Criar e Usar Banco de Dados</h3>
+        <p>Cria e seleciona o banco de dados:</p>
+        <pre><code>CREATE DATABASE ControleDeEstoqueUniformes;
+USE ControleDeEstoqueUniformes;</code></pre>
+    </div>
+
+    <div class="postit">
+        <h3>1.1 Criação de tabela</h3>
+        <p>Criando uma tabela para armazenar produtos:</p>
+        <pre><code>CREATE TABLE produtos ( id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(100) NOT NULL, preco DECIMAL(10, 2) NOT NULL, estoque INT DEFAULT 0 );</code></pre>
+    </div>
+
+    <div class="postit">
+        <h3>2. Criar e Popular Tabela Funcionarios</h3>
+        <p>Cria a tabela e insere funcionários:</p>
+        <pre><code>CREATE TABLE Funcionarios (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Nome VARCHAR(100) NOT NULL,
+    Tamanho_Camisa VARCHAR(10) NOT NULL,
+    Tamanho_Calca VARCHAR(10) NOT NULL,
+    Tamanho_Sapato INT NOT NULL
+);
+
+INSERT INTO Funcionarios (Nome, Tamanho_Camisa, Tamanho_Calca, Tamanho_Sapato)
+VALUES 
+    ('Carlos Silva', 'M', '40', 42),
+    ('Ana Souza', 'G', '38', 37),
+    ('João Silva', 'P', '41', '40');</code></pre>
+    </div>
+
+    <div class="postit">
+        <h3>3. Selecionar e Contar Funcionarios</h3>
+        <p>Seleciona todos os dados e conta funcionários:</p>
+        <pre><code>SELECT * FROM Funcionarios;
+
+SELECT COUNT(*) AS Funcionarios
+FROM Funcionarios;</code></pre>
+    </div>
+
+    <div class="postit">
+      <b>> <p> Consultas e restrições para verificar se os dados atendem a critérios específicos e estão em conformidade com as regras de negócios.</p> </b>
+       </div>
+
+
+    <div class="postit"> 
+        <h3>1. Restrições (Constraints)</h3>
+        <p>Definem regras para garantir a integridade dos dados.</p>
+        <pre><code>-- NOT NULL: Impede valores nulos
+    CREATE TABLE clientes (
+        id INT PRIMARY KEY,
+        nome VARCHAR(100) NOT NULL
+    );
+    
+    -- UNIQUE: Garante valores exclusivos
+    CREATE TABLE usuarios (
+        email VARCHAR(255) UNIQUE
+    );
+    
+    -- PRIMARY KEY: Identifica registros únicos
+    CREATE TABLE pedidos (
+        id INT PRIMARY KEY
+    );
+    
+    -- FOREIGN KEY: Relaciona tabelas
+    CREATE TABLE pedidos (
+        id INT PRIMARY KEY,
+        cliente_id INT,
+        FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+    );
+    
+    -- CHECK: Define restrições personalizadas
+    CREATE TABLE produtos (
+        id INT PRIMARY KEY,
+        preco DECIMAL(10,2) CHECK (preco > 0)
+    );</code></pre>
+    </div>
+    
+    <div class="postit"> 
+        <h3>2. Consultas SELECT para Validação</h3>
+        <p>Usadas para inspecionar e validar dados.</p>
+        <pre><code>-- Filtragem com WHERE
+    SELECT * FROM clientes WHERE idade >= 18;
+    
+    -- Funções de agregação
+    SELECT COUNT(*) FROM pedidos;
+    SELECT AVG(preco) FROM produtos;
+    
+    -- Agrupamento com GROUP BY
+    SELECT categoria, COUNT(*) FROM produtos GROUP BY categoria;
+    
+    -- Filtragem de grupos com HAVING
+    SELECT categoria, COUNT(*) FROM produtos 
+    FROM produtos 
+    GROUP BY categoria 
+    HAVING COUNT(*) > 10;</code></pre>
+    </div>
+    
+    <div class="postit"> 
+        <h3>3. Transações</h3>
+        <p>Agrupam operações para garantir consistência.</p>
+        <pre><code>BEGIN TRANSACTION;
+    
+    INSERT INTO pedidos (id, cliente_id) VALUES (1, 101);
+    UPDATE clientes SET saldo = saldo - 100 WHERE id = 101;
+    
+    COMMIT;</code></pre>
+    </div>
+    
+    <div class="postit"> 
+        <h3>4. Procedimentos Armazenados e Gatilhos (Triggers)</h3>
+        <p>Automatizam operações no banco de dados.</p>
+        <pre><code>-- Procedimento armazenado
+    CREATE PROCEDURE atualizar_saldo (IN cliente_id INT, IN valor DECIMAL)
+    BEGIN
+        UPDATE clientes SET saldo = saldo - valor WHERE id = cliente_id;
+    END;
+    
+    -- Trigger para verificar estoque antes da inserção
+    CREATE TRIGGER verificar_estoque
+    BEFORE INSERT ON pedidos
+    FOR EACH ROW
+    BEGIN
+        IF (SELECT estoque FROM produtos WHERE id = NEW.produto_id) < 1 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Estoque insuficiente';
+        END IF;
+    END;</code></pre>
+    </div>
     

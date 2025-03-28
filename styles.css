@@ -1,0 +1,24 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+.postit {
+    background-color: #ffff99;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+.postit h3 {
+    margin-top: 0;
+}
+.postit pre {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    overflow-x: auto;
+}
